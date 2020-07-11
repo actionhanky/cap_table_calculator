@@ -3,47 +3,10 @@ use std::io;
 fn main() {
 
     //create initial cap table
-    let investors: Vec<Investor> = Vec::new();
+    let mut captable = Captable::init_captable();
 
-    println!("what is the company name?");
-    let mut input = String::new();
-    io::stdin().read_line(&mut input).unwrap();
-    let company_name: String = input.trim().parse().unwrap();
-
-    println!("how many shares are there?");
-    let mut input = String::new();
-    io::stdin().read_line(&mut input).unwrap();
-    let shares: i64 = input.trim().parse().unwrap();
-
-    let mut captable = Captable::new(company_name,
-        shares, investors);
-
-    //add investors
-    println!("How many investors?");
-    let mut input = String::new();
-    io::stdin().read_line(&mut input).unwrap();
-    let mut investor_counter: i32 = input.trim().parse().unwrap();
-    println!("This many investors {}", investor_counter);
-
-    while investor_counter != 0 {
-
-        println!("What is the investor name?");
-        let mut input = String::new();
-        io::stdin().read_line(&mut input).unwrap();
-        let investor_name: String = input.trim().parse().unwrap();
-
-        println!("How many shares do they hold?");
-        let mut input = String::new();
-        io::stdin().read_line(&mut input).unwrap();
-        let investor_shares: i64 = input.trim().parse().unwrap();
-
-        //investors.push(Investor::new(investor_name, investor_shares));
-        captable.add_investor(Investor::new(investor_name, investor_shares));
-
-        //println!("Added: {:?}", investors);
-        //println!("{}!", investor_counter);
-        investor_counter -= 1;
-    }
+    //add the investors
+    captable.add_investors();
 
     for (i, x) in captable.investors.iter().enumerate() {
         println!("Investor number {} is {:?} and they own {} of the company", 
@@ -71,7 +34,53 @@ impl Captable {
         }
     }
 
-    pub fn add_investor(&mut self, investor: Investor){
+    pub fn init_captable() -> Captable {
+
+        //create initial cap table
+        let investors: Vec<Investor> = Vec::new();
+
+        println!("what is the company name?");
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).unwrap();
+        let company_name: String = input.trim().parse().unwrap();
+
+        println!("how many shares are there?");
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).unwrap();
+        let shares: i64 = input.trim().parse().unwrap();
+        Captable::new(company_name, shares, investors)
+    }
+
+    pub fn add_investors(&mut self){
+        //add investors
+        println!("How many investors?");
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).unwrap();
+        let mut investor_counter: i32 = input.trim().parse().unwrap();
+        println!("This many investors {}", investor_counter);
+
+        while investor_counter != 0 {
+
+            println!("What is the investor name?");
+            let mut input = String::new();
+            io::stdin().read_line(&mut input).unwrap();
+            let investor_name: String = input.trim().parse().unwrap();
+
+            println!("How many shares do they hold?");
+            let mut input = String::new();
+            io::stdin().read_line(&mut input).unwrap();
+            let investor_shares: i64 = input.trim().parse().unwrap();
+
+            //investors.push(Investor::new(investor_name, investor_shares));
+            self.add_investor(Investor::new(investor_name, investor_shares));
+
+            //println!("Added: {:?}", investors);
+            //println!("{}!", investor_counter);
+            investor_counter -= 1;
+        }
+    }
+
+    fn add_investor(&mut self, investor: Investor){
         self.investors.push(investor);
     }
 }
