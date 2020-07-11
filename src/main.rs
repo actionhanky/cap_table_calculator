@@ -47,7 +47,7 @@ fn main() {
 
     for (i, x) in captable.investors.iter().enumerate() {
         println!("Investor number {} is {:?} and they own {} of the company", 
-        i, x.name, x.ownership(&captable));
+        i, x.name, format!("{:.1}%", 100.0 * x.ownership(&captable)));
     }
 
     println!("DONE");
@@ -92,6 +92,6 @@ impl Investor {
     }
 
     pub fn ownership(&self,  captable: &Captable) -> f64 {
-        (self.number_of_shares/captable.shares) as f64
+        self.number_of_shares as f64/captable.shares as f64
     }
 }
